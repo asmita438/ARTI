@@ -1,0 +1,5 @@
+{% for paragraph in object_list %}
+  <p>{{ paragraph.text }}</p>
+  <p>{{ paragraph.font_size }}</p>
+  <p>{{ paragraph.page.page_no }}</p>
+{% endfor %}

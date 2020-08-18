@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Page Detail{% endblock %}
+
+{% block links %}
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'book-detail' page.book.id %}">View Book</a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'paragraph-create' page.id %}">Create Paragraph</a>
+        
+    </li>
+  
+{% endblock %}
+{% block headers %}
+    <h3 style="text-align:center">Page no: {{ page.page_no }}</h3>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                          {% if page.image %}
+       <img src="{{ page.image.url }}" class="image" height=200/>
+                {% else %}
+                    <img src="/media/pictures/imagenotfound.png" class="rounded mx-auto d-block", height=200/>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %} 
+
+{% block content %}    
+    {% for paragraph in page.paragraph_set.all %}
+        <div class ="row">
+        <div class="col-12">
+     <div class="card">
+  <div class="card-body">
+
+    <h5 class="card-title"><h1>{{ forloop.counter0|add:paragraph.paragraph_no }}</h1></h5>
+    <p style="font-size:{{paragraph.font_size}}px" class="card-text">{{ paragraph.text }}</p>
+    
+    <a class="btn btn-warning" href="{% url 'paragraph-update' paragraph.id %}" class="card-link">Edit Paragraph</a>
+    <a class="btn btn-danger" href="{% url 'paragraph-delete' paragraph.id %}" class="card-link">Delete Paragraph</a>
+  </div>
+</div>
+</div>
+</div>
+{% endfor %}
+
+    
+{% endblock %} 
+    
+   <!-- <table>
+      {% for paragraph in page.paragraph_set.all %}
+        <tr>
+          <td>{{ paragraph.id }}</td>
+          <td>{{ paragraph.text }}</td>
+          <td>{{ paragraph.font_size }}</td>
+          <td><a href="{% url 'paragraph-update' paragraph.id %}">Edit Paragraph</a></td>
+          <td><a href="{% url 'paragraph-delete' paragraph.id %}">Delete Paragraph</a></td>
+        </tr>
+      {% endfor %}
+    </table>-->
+

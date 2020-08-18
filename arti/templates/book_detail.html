@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %} Book Detail {% endblock  %}
+
+{% block links %}
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'page-create' object.id %}">Add Page</a>
+    </li>
+{% endblock %}
+{% block headers %}
+    <h1 style="text-align:center;text-transform:uppercase">{{ object.title}}</h1>
+    <a class="btn btn-warning" href="{% url 'book-update' book.id %}">Edit Book</a>
+    
+    {% if book.book_image %}
+                    <a href="{% url 'book-detail' book.id %}"><img src="{{ book.book_image.url }}" class="rounded mx-auto d-block" height=200 width=200/></a>
+                {% else %}
+                    <img src="../media/pictures/imagenotfound.png" class="rounded mx-auto d-block" height=200 width=200/>
+                {% endif %}
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'generate-pdf' book.id %}">Generate PDF</a>
+    {% if book.state == 'BT' %}
+        <a href="{% url 'request-verification' book.id %}" class="btn btn-primary">Request Verification</a>
+    {% elif book.state == 'VR' %}
+        {% if request.user.is_staff %}
+            <a href="{% url 'deny-verification' book.id %}" class="btn btn-primary">Deny Verification</a>
+            <a href="{% url 'verify' book.id %}" class="btn btn-primary">Verify</a>
+        {% endif %}
+        <a href="{% url 'cancel-verification' book.id %}" class="btn btn-primary">Cancel Verification Request</a>
+    {% elif book.state == 'VD' %}
+        <a href="{% url 'request-verification' book.id %}" class="btn btn-primary">Request Verification</a>
+    {% elif book.state == 'VF' %}
+        <i class="fas fa-check-circle"></i>
+    {% endif %}
+        
+    <h2>Pages for this book</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Page no.</th>
+          <th scope="col">Book id</th>
+          <th scope="col"> </th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for page in object.get_all_pages %}
+            <tr>
+              <td>{{ page.page_no }}</td>
+              <td>{{ page.book.id }}</td>
+              <td><a href="{% url 'page-detail' page.id %}">View Page</a></td>
+              <td><a href="{% url 'page-update' page.id %}">Edit Page</a></td>
+              <td><a href="{% url 'page-delete' page.id %}">Delete Page</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+        
+{% endblock %}
+   
+  
+
+<!--<table>
+  {% for page in object.page_set.all %}
+  <tr>
+    <td>{{ page.page_no }}</td>
+    <td>{{ page.book.id }}</td>
+    <td><a href="{% url 'page-detail' page.id %}">View Page</a></td>
+
+    <td><a href="{% url 'page-update' page.id %}">Edit Page</a></td>
+    <td><a href="{% url 'page-delete' page.id %}">Delete Page</a></td>
+  </tr>
+  {% endfor %}-->

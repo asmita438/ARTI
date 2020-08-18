@@ -1,0 +1,10 @@
+<table>
+{% for page in object_list %}
+  <tr>
+    <td>{{ page.page_no }}</td>
+    <td>{{ page.book.id }}</td>
+    <td><a href="{% url 'page-update' page.id %}">Edit Page</a></td>
+    <td><a href="{% url 'page-delete' page.id %}">Delete Page</a></td>
+  </tr>
+{% endfor %}
+</table>

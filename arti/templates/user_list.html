@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+{% if request.user.is_staff %}
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">User ID</th>
+          <th scope="col">Uername</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+
+          
+        </tr>
+      </thead>
+      <tbody>
+          {% for user in object_list %}
+        <tr>
+          <th scope="row">{{ user.user_id }}</th>
+          <td>{{ user.username }}</td>
+          <td>{{ user.is_staff}}</td>
+          <td><a class="btn btn-primary" href="{% url 'make-admin' user.id %}" class="card-link">Make Admin</a></td>
+          
+        </tr>
+        {% endfor %}
+{% endif %}
+        
+{% endblock %}

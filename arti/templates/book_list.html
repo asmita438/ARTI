@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+
+{% block title %} Home {% endblock  %}
+
+{% block links %}
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'book-create' %}">Create Book</a>
+    </li>
+    <li class="nav-item dropdown">
+						 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						 All books
+						 </a>
+						 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						 <a class="dropdown-item" href="{% url 'book-being-translated' %}">Being Translated</a>
+						 <a class="dropdown-item" href="{% url 'book-request-verification' %}">Requesting Verification</a>
+                         <a class="dropdown-item" href="{% url 'book-verified' %}">Verified</a>
+						 <a class="dropdown-item" href="{% url 'book-denied-translation' %}">Verification Denied</a>
+						 </div>
+						 </li>
+    <li class="nav-item dropdown">
+						 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						 My books
+						 </a>
+						 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						 <a class="dropdown-item" href="{% url 'user-book-translated' %}">Being Translated</a>
+						 <a class="dropdown-item" href="{% url 'user-book-verification' %}">Requesting Verification</a>
+                         <a class="dropdown-item" href="{% url 'user-book-verified' %}">Verified</a>
+						 <a class="dropdown-item" href="{% url 'user-book-denied' %}">Verification Denied</a>
+						 </div>
+						 </li>
+    
+{% endblock %}
+{% block content %}
+
+<form class="form-inline" method=GET action="{% url 'book-search' %}">
+      <div class="mx-auto">  
+  
+    <label for="title" class="sr-only">Title</label>
+    <input type="text" id="title" name="title" placeholder="Title of Book">
+  
+  <button type="submit" class="btn btn-primary mb-2" style="margin-top:6px">Search</button>
+  </div>
+</form>
+    <div class="row">
+        {% for book in object_list %}
+            <div class="col-4 mb-3 mt-3">
+                
+                
+                <div class="card bg-light mb-3" style="max-width: 18rem;">
+                {% if book.book_image %}
+                    <a href="{% url 'book-detail' book.id %}"><img src="{{ book.book_image.url }}" class="card-img-top", height=200/></a>
+                {% else %}
+                    <img src="../media/pictures/imagenotfound.png" class="card-img-top", height=200/>
+                {% endif %}
+                <div class="card-header" style="text-transform:uppercase;font-family:American Typewriter,serif"><a href="{% url 'book-detail' book.id %}">{{ book.id}}. {{ book.title}}</a></div>
+                <div class="card-header" style="text-transform:uppercase;font-family:American Typewriter,serif">
+                    
+                
+                
+                </div>
+                <div class="card-body">
+                
+                    <a class="btn btn-warning" href="{% url 'book-update' book.id %}" class="card-link">Edit Book</a>
+                    <a class="btn btn-danger" href="{% url 'book-delete' book.id %}" class="card-link">Delete Book</a>
+                    
+                </div>
+                </div>
+            </div>      
+            
+        {% endfor %}
+    </div>
+    </div>
+
+
+<!--<table class="table">
+{% for book in object_list %}
+  <tr>
+    <td><a href="{% url 'book-detail' book.id %}">{{ book.id}}. {{ book.title}}</a></td>
+    <td><a href="{% url 'book-update' book.id %}">Edit Book</a></td>
+    <td><a href="{% url 'book-delete' book.id %}">Delete Book</a></td>
+  </tr>
+{% endfor %}
+</table>-->
+{% endblock%}
